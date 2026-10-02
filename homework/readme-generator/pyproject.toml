@@ -1,0 +1,20 @@
+[project]
+name = "readme-gen"
+version = "0.1.0"
+description = "專案 README 產生器：掃描專案結構，互動問答，一鍵產出高品質 README（含品質評分）"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+
+[project.scripts]
+readme-gen = "readme_gen.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
