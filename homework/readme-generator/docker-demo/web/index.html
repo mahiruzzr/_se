@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Docker 微服務展示看板</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Docker 微服務展示看板</h1>
+    <p>nginx 反向代理 → Node.js / Rust API → PostgreSQL</p>
+  </header>
+
+  <main>
+    <section class="card wide">
+      <h2>系統架構</h2>
+      <div class="arch">
+        <div class="arch-box">瀏覽器<br><span class="muted small">:8080</span></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box highlight">nginx<br><span class="muted small">反向代理 :80</span></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-col">
+          <div class="arch-box">node-api<br><span class="muted small">:3000</span></div>
+          <div class="arch-box">rust-api<br><span class="muted small">:8080</span></div>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box">postgres<br><span class="muted small">:5432</span></div>
+      </div>
+      <p class="muted small arch-note">
+        前端與 API 位於 frontend 網路；node-api 與 postgres 位於 backend 網路，nginx 無法直接存取資料庫。
+      </p>
+    </section>
+
+    <section class="card wide">
+      <h2>服務狀態 <span class="muted small" id="status-updated"></span></h2>
+      <div class="status-grid">
+        <div class="status-item">
+          <span class="status-dot" id="dot-nginx"></span><span class="status-name">nginx</span>
+          <div class="muted small" id="detail-nginx">檢查中…</div>
+        </div>
+        <div class="status-item">
+          <span class="status-dot" id="dot-node"></span><span class="status-name">node-api</span>
+          <div class="muted small" id="detail-node">檢查中…</div>
+        </div>
+        <div class="status-item">
+          <span class="status-dot" id="dot-rust"></span><span class="status-name">rust-api</span>
+          <div class="muted small" id="detail-rust">檢查中…</div>
+        </div>
+        <div class="status-item">
+          <span class="status-dot" id="dot-postgres"></span><span class="status-name">postgres</span>
+          <div class="muted small" id="detail-postgres">檢查中…</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>訪客計數（PostgreSQL 持久化）</h2>
+      <div class="visits-count" id="visits-count">--</div>
+      <div class="muted small" id="visits-updated"></div>
+      <button id="visit-btn" class="primary">+1 再訪一次</button>
+    </section>
+
+    <section class="card">
+      <h2>Rust API 回報的容器資訊</h2>
+      <dl class="info-list" id="rust-info">
+        <div><dt>讀取中…</dt><dd></dd></div>
+      </dl>
+    </section>
+
+    <section class="card wide">
+      <h2>留言板（瀏覽器 → nginx → node-api → PostgreSQL）</h2>
+      <form id="message-form">
+        <input id="message-author" placeholder="你的名字" maxlength="50" required>
+        <input id="message-content" placeholder="留一句話給 Docker 系統" maxlength="500" required>
+        <button type="submit" class="primary">送出</button>
+      </form>
+      <ul class="message-list" id="message-list"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      Docker 微服務作業展示 ｜ <code>docker compose up --build -d</code> ｜
+      資料存於具名資料卷 <code>pgdata</code>，<code>docker compose down</code> 後再啟動資料仍在
+    </p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

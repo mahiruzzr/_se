@@ -1,0 +1,92 @@
+name: docker-demo
+
+services:
+
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    image: docker-demo-nginx
+    container_name: demo-nginx
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    networks:
+      - frontend
+    depends_on:
+      node-api:
+        condition: service_healthy
+      rust-api:
+        condition: service_healthy
+    restart: unless-stopped
+
+  node-api:
+    build:
+      context: .
+      dockerfile: node-api/Dockerfile
+    image: docker-demo-node-api
+    container_name: demo-node-api
+    environment:
+      PORT: "3000"
+      PGHOST: db
+      PGPORT: "5432"
+      PGUSER: ${POSTGRES_USER:-demo}
+      PGPASSWORD: ${POSTGRES_PASSWORD:-demo_password_2026}
+      PGDATABASE: ${POSTGRES_DB:-demo}
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://localhost:3000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+  rust-api:
+    build:
+      context: .
+      dockerfile: rust-api/Dockerfile
+    image: docker-demo-rust-api
+    container_name: demo-rust-api
+    networks:
+      - frontend
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    container_name: demo-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-demo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-demo_password_2026}
+      POSTGRES_DB: ${POSTGRES_DB:-demo}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-demo} -d ${POSTGRES_DB:-demo}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
