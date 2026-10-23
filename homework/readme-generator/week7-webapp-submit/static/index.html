@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="以 Rust、Axum 與 Playwright 打造的任務清單測試範例。" />
+    <title>今日任務 · Week 7 Task Board</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <p class="eyebrow">Week 7 · Testing Lab</p>
+        <h1>今日任務</h1>
+        <p class="subtitle">把腦袋裡的事情放下來，一次專心完成一件。</p>
+      </header>
+
+      <section class="composer" aria-labelledby="composer-heading">
+        <h2 id="composer-heading" class="sr-only">新增任務</h2>
+        <form id="task-form" autocomplete="off" novalidate>
+          <label class="sr-only" for="task-title">任務名稱</label>
+          <input
+            id="task-title"
+            name="title"
+            type="text"
+            maxlength="120"
+            placeholder="例如：寫完 API 系統測試"
+          />
+          <button type="submit" class="primary">新增</button>
+        </form>
+        <p id="form-error" class="form-error" role="alert" hidden></p>
+      </section>
+
+      <section class="board" aria-labelledby="board-heading">
+        <div class="board-header">
+          <h2 id="board-heading" class="sr-only">任務清單</h2>
+          <div class="filters" role="group" aria-label="篩選任務">
+            <button type="button" class="filter is-active" data-filter="all" aria-pressed="true">
+              全部 <span id="count-all" class="count">0</span>
+            </button>
+            <button type="button" class="filter" data-filter="active" aria-pressed="false">
+              進行中 <span id="count-active" class="count">0</span>
+            </button>
+            <button type="button" class="filter" data-filter="completed" aria-pressed="false">
+              已完成 <span id="count-completed" class="count">0</span>
+            </button>
+          </div>
+          <p id="summary" class="summary">目前沒有任務</p>
+        </div>
+
+        <ul id="task-list" class="task-list" aria-live="polite"></ul>
+
+        <div id="empty-state" class="empty-state">
+          <div class="empty-mark" aria-hidden="true">✓</div>
+          <p id="empty-title">清單還是空的</p>
+          <span id="empty-hint">新增第一件想完成的事吧。</span>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>Rust · Axum · Playwright</span>
+        <span>單元測試 → API 測試 → E2E 測試</span>
+      </footer>
+    </main>
+
+    <div id="toast" class="toast" role="status" hidden></div>
+    <script src="/app.js"></script>
+  </body>
+</html>
