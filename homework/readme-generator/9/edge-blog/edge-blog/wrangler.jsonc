@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "edge-blog",
+  "main": "src/index.js",
+  "compatibility_date": "2025-11-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "edge-blog-db",
+      "database_id": "貼上 wrangler d1 create 回傳的 database_id"
+    }
+  ],
+  "observability": { "enabled": true }
+}
