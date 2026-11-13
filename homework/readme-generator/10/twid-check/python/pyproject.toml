@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "twid-check"
+version = "0.1.0"
+description = "Validate Taiwan national ID numbers (身分證字號), resident ID numbers and business tax IDs (統一編號)."
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Your Name", email = "you@example.com" }]
+keywords = ["taiwan", "validator", "national-id", "ubn", "統一編號", "身分證"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/YOUR_GITHUB_NAME/twid-check"
+Issues = "https://github.com/YOUR_GITHUB_NAME/twid-check/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/twid_check"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

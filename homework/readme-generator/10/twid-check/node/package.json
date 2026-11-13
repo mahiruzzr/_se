@@ -1,0 +1,21 @@
+{
+  "name": "twid-check",
+  "version": "0.1.0",
+  "description": "Validate Taiwan national ID numbers (身分證字號), resident ID numbers and business tax IDs (統一編號).",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": ["index.js", "index.d.ts", "README.md", "LICENSE"],
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": ["taiwan", "validator", "national-id", "ubn", "統一編號", "身分證"],
+  "author": "Your Name <you@example.com>",
+  "license": "MIT",
+  "engines": { "node": ">=18" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YOUR_GITHUB_NAME/twid-check.git"
+  },
+  "bugs": { "url": "https://github.com/YOUR_GITHUB_NAME/twid-check/issues" },
+  "homepage": "https://github.com/YOUR_GITHUB_NAME/twid-check#readme"
+}
